@@ -6,11 +6,12 @@
            <div class="card__face card__face--front">
              <div class="card__header">
              <div class="card__image">
-          <img src="assets/Media.png" alt="avatar" />
+          <img src="Media.png" alt="avatar" />
         </div>
         <div class="card__details">
           <h1>{{ person.name }}</h1>
           <p>Frontend student HVA</p>
+          {% comment %} <p>{{ person|json }}</p> {% endcomment %}
         </div>
         <p class="card__quote">Full stack developer</p>
       </div>
