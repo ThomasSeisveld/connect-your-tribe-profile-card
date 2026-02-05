@@ -10,7 +10,6 @@
         </div>
         <div class="card__details">
           <h1>{{ person.name }}</h1>
-          <p>Hva is stom</p>
           {% comment %} <p>{{ person|json }}</p> {% endcomment %}
         </div>
         <p class="card__quote">Full stack developer</p>
@@ -27,10 +26,7 @@
 
     <div class="card__face card__face--back">
       <div class="card__body">
-              <p>
-               Mijn naam is Thomas Seisveld, ik ben 19 jaar oud en ik woon in Leiden.
-                 Ik ben moment aan de Hogeschool van Amsterdam.
-              </p>
+             <p>{{ person|json }}</p>
               <button id="backButton">Terug</button>
             </div>        
           </div>

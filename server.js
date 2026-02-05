@@ -29,41 +29,50 @@ app.use(express.static('public'))
 
 // Stel Liquid in als 'view engine'
 const engine = new Liquid();
-app.engine('liquid', engine.express()); 
+app.engine('liquid', engine.express());
 
 // Stel de map met Liquid templates in
 // Let op: de browser kan deze bestanden niet rechtstreeks laden (zoals voorheen met HTML bestanden)
 app.set('views', './views')
 
 // Zorg dat werken met request data makkelijker wordt
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
 // Om Views weer te geven, heb je Routes nodig
 // Maak een GET route voor de index (meestal doe je dit in de root, als /)
 // In je visitekaartje was dit waarschijnlijk index.html
 app.get('/', async function (request, response) {
+   const personResponse = await fetch('https://fdnd.directus.app/items/person/' + personID)
+   // Lees van de response van die fetch het JSON object in, waar we iets mee kunnen doen
+   const personResponseJSON = await personResponse.json()
+   // parse de custom data, als die er is.
+   const personData = personResponseJSON.data
+   if (personData.custom && typeof personData.custom === 'string') {
+      personData.custom = JSON.parse(personData.custom)
+   }
+   console.log(personData)
    // Render index.liquid uit de Views map en geef de opgehaalde data mee, in een variabele genaamd person
-   response.render('index.liquid', {person: personResponseJSON.data})
+   response.render('index.liquid', { person: personData })
 })
 
 app.get('/oefenen', async function (request, response) {
    // Render practice.liquid uit de Views map en geef de opgehaalde data mee, in een variabele genaamd person
-   response.render('oefenen.liquid', {person: personResponseJSON.data})
+   response.render('oefenen.liquid', { person: personData })
 })
 
 // Had je meer pagina's in je oude visitekaartje? Zoals een contact.html?
 // Maak daar dan meer Routes voor aan, en koppel ze aan Views
 // app.get('/contact', function (request, response) {
-   // Render bijvoorbeeld contact.liquid uit de views map, zonder daar iets aan mee te geven
-   // response.render('contact.liquid')
+// Render bijvoorbeeld contact.liquid uit de views map, zonder daar iets aan mee te geven
+// response.render('contact.liquid')
 // })
 
 // Maak een POST route voor de index; hiermee kun je bijvoorbeeld formulieren afvangen
 // Hier doen we nu nog niets mee, maar je kunt er mee spelen als je wilt
 app.post('/', async function (request, response) {
-  // Je zou hier data kunnen opslaan, of veranderen, of wat je maar wilt
-  // Er is nog geen afhandeling van een POST, dus stuur de bezoeker terug naar /
-  response.redirect(303, '/')
+   // Je zou hier data kunnen opslaan, of veranderen, of wat je maar wilt
+   // Er is nog geen afhandeling van een POST, dus stuur de bezoeker terug naar /
+   response.redirect(303, '/')
 })
 
 // Stel het poortnummer in waar Express op moet gaan luisteren
@@ -72,6 +81,6 @@ app.set('port', process.env.PORT || 8000)
 
 // Start Express op, haal daarbij het zojuist ingestelde poortnummer op
 app.listen(app.get('port'), function () {
-  // Toon een bericht in de console en geef het poortnummer door
-  console.log(`Application started on http://localhost:${app.get('port')}`)
+   // Toon een bericht in de console en geef het poortnummer door
+   console.log(`Application started on http://localhost:${app.get('port')}`)
 })
