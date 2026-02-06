@@ -79,7 +79,6 @@ nav {
 }
 
 .card.opened{
-  width: 600px;
   transition: 100ms;
 }
 
