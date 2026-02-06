@@ -111,7 +111,7 @@ app.get('/', async function (request, response) {
    const personResponseJSON = await personResponse.json()
    // parse de custom data, als die er is.
    const personData = personResponseJSON.data
-   if (personData.custom && typeof personData.custom === 'string') {
+   if (personData.custom === 'string') {
       personData.custom = JSON.parse(personData.custom)
    }
    
@@ -204,7 +204,7 @@ app.get('/messages', async function (request, response) {
       messages = Object.values(snapshot.val() || {})
     }
     
-    console.log(` Loaded ${messages.length} messages for student ${studentId}`)
+    // console.log(` Loaded ${messages.length} messages for student ${studentId}`)
     response.json({ messages: messages })
   } catch (error) {
     console.error(' Error loading messages:', error)
